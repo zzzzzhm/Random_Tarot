@@ -11,7 +11,7 @@ export function Sidebar({ activePage, onNavigate }) {
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <button className="sidebar-toggle" onClick={toggleSidebar}>
-        {isOpen ? '◀' : '▶'}
+        {isOpen ? '<' : '>'}
       </button>
 
       <nav className="sidebar-nav">
@@ -23,7 +23,7 @@ export function Sidebar({ activePage, onNavigate }) {
               setIsOpen(false)
             }}
           >
-            <span className="nav-icon">👤</span>
+            <span className="nav-icon">P</span>
             {isOpen && <span>Portfolio</span>}
           </button>
 
@@ -34,7 +34,7 @@ export function Sidebar({ activePage, onNavigate }) {
               setIsOpen(false)
             }}
           >
-            <span className="nav-icon">🃏</span>
+            <span className="nav-icon">T</span>
             {isOpen && <span>Tarot Reading</span>}
           </button>
         </div>

@@ -90,7 +90,7 @@ export function Tarot() {
   return (
     <div className="tarot-container">
       <div className="tarot-header">
-        <h1>🃏 Tarot Reading</h1>
+        <h1>Tarot Reading</h1>
         <p className="tarot-subtitle">
           {currentQuestion && `Question: "${currentQuestion}"`}
         </p>
@@ -102,7 +102,7 @@ export function Tarot() {
           onClick={() => handleSpreadChange(1)}
           disabled={isFlipping}
         >
-          <span className="spread-icon">1️⃣</span>
+          <span className="spread-icon">1</span>
           <span className="spread-text">Single Card</span>
         </button>
         <button
@@ -110,17 +110,17 @@ export function Tarot() {
           onClick={() => handleSpreadChange(3)}
           disabled={isFlipping}
         >
-          <span className="spread-icon">3️⃣</span>
+          <span className="spread-icon">3</span>
           <span className="spread-text">Three-Card Spread</span>
         </button>
       </div>
 
-      {error && <div className="error-message">❌ {error}</div>}
+      {error && <div className="error-message">{error}</div>}
 
       <div className="cards-display">
         {cards.length === 0 && !isFlipping && (
           <div className="empty-state">
-            <div className="empty-icon">🎴</div>
+            <div className="empty-icon">...</div>
             <p>Select a spread and ask your question</p>
           </div>
         )}
@@ -144,7 +144,7 @@ export function Tarot() {
               )}
               <h3>{card.name}</h3>
               <p className={`orientation ${card.is_reversed ? 'reversed' : 'upright'}`}>
-                {card.is_reversed ? '⬇️ Reversed' : '⬆️ Upright'}
+                {card.is_reversed ? 'Reversed' : 'Upright'}
               </p>
               <p className="card-meaning">{card.current_meaning}</p>
             </div>
@@ -158,7 +158,7 @@ export function Tarot() {
           onClick={handleDrawClick}
           disabled={isFlipping}
         >
-          {isFlipping ? '✨ Drawing...' : '🎴 Draw Cards'}
+          {isFlipping ? 'Drawing...' : 'Draw Cards'}
         </button>
 
         {cards.length > 0 && !isFlipping && (
@@ -181,7 +181,8 @@ export function Tarot() {
         spread={spread}
       />
 
-      {loading && <div className="loading-indicator">🌟 Connecting...</div>}
+      {loading && <div className="loading-indicator">Connecting...</div>}
     </div>
   )
 }
+

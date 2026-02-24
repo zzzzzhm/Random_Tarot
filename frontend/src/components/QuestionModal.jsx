@@ -23,11 +23,11 @@ export function QuestionModal({ isOpen, onClose, onSubmit, spread }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2 className="modal-title">
-          {spread === 1 ? '🃏 Single Card Reading' : '🃏 Three-Card Spread'}
+          {spread === 1 ? 'Single Card Reading' : 'Three-Card Spread'}
         </h2>
-        
+
         <p className="modal-subtitle">
-          Think deeply about your question while drawing
+          Focus on your question before you draw.
         </p>
 
         <div className="modal-input-group">
@@ -52,7 +52,7 @@ export function QuestionModal({ isOpen, onClose, onSubmit, spread }) {
             onClick={handleSubmit}
             disabled={!question.trim()}
           >
-            Draw Cards ✨
+            Draw Cards
           </button>
         </div>
       </div>
