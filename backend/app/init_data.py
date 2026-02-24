@@ -958,22 +958,55 @@ def init_sample_data():
 
         inserted = 0
         updated = 0
+        deleted = 0
 
         for card_data in TAROT_DATA:
             payload = {k: v for k, v in card_data.items() if k in allowed_fields}
-            existing = by_id.get(card_data["id"]) or by_name.get(card_data["name"])
+            target_id = card_data["id"]
+            target_name = card_data["name"]
+            existing_by_id = by_id.get(target_id)
+            existing_by_name = by_name.get(target_name)
+
+            # Dirty legacy data case: same card name exists on a different id row.
+            # Keep the target-id row and delete duplicate-name row first.
+            if (
+                existing_by_id
+                and existing_by_name
+                and existing_by_id.id != existing_by_name.id
+            ):
+                db.delete(existing_by_name)
+                db.flush()
+                deleted += 1
+                by_id.pop(existing_by_name.id, None)
+                by_name.pop(existing_by_name.name, None)
+                existing_by_name = None
+
+            existing = existing_by_id or existing_by_name
 
             if existing:
+                # If card exists by name but id is wrong, align to canonical id.
+                if existing.id != target_id and existing_by_id is None:
+                    by_id.pop(existing.id, None)
+                    existing.id = target_id
+                    by_id[target_id] = existing
+
                 for key, value in payload.items():
                     setattr(existing, key, value)
+                by_name[target_name] = existing
                 updated += 1
             else:
-                db.add(TarotCard(**payload))
+                new_card = TarotCard(**payload)
+                db.add(new_card)
+                by_id[target_id] = new_card
+                by_name[target_name] = new_card
                 inserted += 1
 
         db.commit()
         total = db.query(TarotCard).count()
-        print(f"Added {inserted}, updated {updated}, total={total} (expected={expected_count})")
+        print(
+            f"Added {inserted}, updated {updated}, deleted_conflicts {deleted}, "
+            f"total={total} (expected={expected_count})"
+        )
     except Exception as e:
         print(f"Failed to initialize data: {e}")
         db.rollback()
