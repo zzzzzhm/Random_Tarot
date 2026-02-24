@@ -1,262 +1,301 @@
 #!/usr/bin/env python3
 """
-Download Rider-Waite Tarot card images from Wikimedia Commons
-and upload them to AWS S3
+Download ALL images from Wikimedia Commons category locally (NO S3).
+
+Target category:
+  Category:Rider-Waite tarot deck (Roses & Lilies)
 
 Usage:
-    python download_tarot_images.py
+  python download_rws1909_local.py
 """
 
-import os
-import requests
-import boto3
-from pathlib import Path
-from dotenv import load_dotenv
+import re
 import json
-from urllib.parse import urljoin
+import time
+import random
+import unicodedata
+from pathlib import Path
+from typing import Optional, Dict, Any, List, Tuple
 
-# Load environment variables
-load_dotenv()
+import requests
 
-# AWS Configuration
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_REGION = os.getenv('AWS_REGION', 'us-east-1')
-S3_BUCKET = os.getenv('S3_BUCKET')
+API = "https://commons.wikimedia.org/w/api.php"
+CATEGORY = "Rider-Waite tarot deck (Roses & Lilies)"
 
-# Validate AWS credentials
-if not all([AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET]):
-    print("❌ Error: Missing AWS credentials")
-    print("Please set these environment variables in .env:")
-    print("  AWS_ACCESS_KEY_ID")
-    print("  AWS_SECRET_ACCESS_KEY")
-    print("  S3_BUCKET")
-    exit(1)
+OUT_DIR = Path("./rws1909_roses_lilies")
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Initialize S3 client
-s3_client = boto3.client(
-    's3',
-    region_name=AWS_REGION,
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-)
+MANIFEST_PATH = OUT_DIR / "manifest.json"
 
-# Tarot card information (standard 22 Major Arcana)
-TAROT_CARDS = {
-    0: "The Fool",
-    1: "The Magician",
-    2: "The High Priestess",
-    3: "The Empress",
-    4: "The Emperor",
-    5: "The Hierophant",
-    6: "The Lovers",
-    7: "The Chariot",
+# rate limit + retry to avoid 429
+API_MIN_DELAY = 1.0
+DL_MIN_DELAY = 2.0
+JITTER = 0.3
+
+MAX_RETRIES = 8
+BASE_BACKOFF = 1.2
+MAX_BACKOFF = 60
+
+TIMEOUT_API = 30
+TIMEOUT_DL = 90
+
+MAJOR_ARCANA = {
+    0: "The_Fool",
+    1: "The_Magician",
+    2: "The_High_Priestess",
+    3: "The_Empress",
+    4: "The_Emperor",
+    5: "The_Hierophant",
+    6: "The_Lovers",
+    7: "The_Chariot",
     8: "Strength",
-    9: "The Hermit",
-    10: "Wheel of Fortune",
+    9: "The_Hermit",
+    10: "Wheel_of_Fortune",
     11: "Justice",
-    12: "The Hanged Man",
+    12: "The_Hanged_Man",
     13: "Death",
     14: "Temperance",
-    15: "The Devil",
-    16: "The Tower",
-    17: "The Star",
-    18: "The Moon",
-    19: "The Sun",
+    15: "The_Devil",
+    16: "The_Tower",
+    17: "The_Star",
+    18: "The_Moon",
+    19: "The_Sun",
     20: "Judgement",
-    21: "The World",
+    21: "The_World",
 }
 
-class WikimediaDownloader:
-    """Download images from Wikimedia Commons"""
-    
+def slugify(s: str) -> str:
+    s = unicodedata.normalize("NFKD", s)
+    s = s.encode("ascii", "ignore").decode("ascii")
+    s = s.replace(" ", "_")
+    s = re.sub(r"[^A-Za-z0-9._-]+", "", s)
+    s = re.sub(r"_+", "_", s).strip("_")
+    return s
+
+def load_json(path: Path, default):
+    if path.exists():
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            return default
+    return default
+
+def save_json(path: Path, obj):
+    path.write_text(json.dumps(obj, indent=2, ensure_ascii=False), encoding="utf-8")
+
+def backoff(attempt: int) -> float:
+    s = min(MAX_BACKOFF, BASE_BACKOFF * (2 ** attempt))
+    s += random.random() * 0.7
+    return s
+
+class RobustSession:
     def __init__(self):
-        self.session = requests.Session()
-        self.base_url = "https://commons.wikimedia.org/w/api.php"
-        self.downloaded_files = {}
-    
-    def search_tarot_images(self, query="Rider-Waite tarot", limit=50):
-        """Search for Rider-Waite tarot card images on Wikimedia"""
-        print(f"🔍 Searching for tarot cards: '{query}'...")
-        
+        self.s = requests.Session()
+        self.s.headers.update({
+            "User-Agent": "RWS1909_LocalDownloader/1.0 (contact: hezhuang@ucsd.edu)",
+            "Accept": "application/json",
+        })
+        self._last_api = 0.0
+        self._last_dl = 0.0
+
+    def _sleep_api(self):
+        now = time.time()
+        wait = API_MIN_DELAY - (now - self._last_api)
+        if wait > 0:
+            time.sleep(wait + random.random() * JITTER)
+        self._last_api = time.time()
+
+    def _sleep_dl(self):
+        now = time.time()
+        wait = DL_MIN_DELAY - (now - self._last_dl)
+        if wait > 0:
+            time.sleep(wait + random.random() * JITTER)
+        self._last_dl = time.time()
+
+    def get_json(self, params: dict) -> dict:
+        for attempt in range(MAX_RETRIES):
+            self._sleep_api()
+            try:
+                r = self.s.get(API, params=params, timeout=TIMEOUT_API)
+                if r.status_code == 429:
+                    ra = r.headers.get("Retry-After")
+                    sleep_s = int(ra) + random.random() if (ra and ra.isdigit()) else backoff(attempt)
+                    print(f"  ⏳ 429(API). sleep {sleep_s:.1f}s retry...")
+                    time.sleep(sleep_s)
+                    continue
+                r.raise_for_status()
+                return r.json()
+            except requests.RequestException as e:
+                sleep_s = backoff(attempt)
+                print(f"  ⚠️ API error: {e} | sleep {sleep_s:.1f}s retry...")
+                time.sleep(sleep_s)
+        raise RuntimeError("API failed after retries")
+
+    def download_bytes(self, url: str) -> bytes:
+        for attempt in range(MAX_RETRIES):
+            self._sleep_dl()
+            try:
+                r = self.s.get(url, timeout=TIMEOUT_DL)
+                if r.status_code == 429:
+                    ra = r.headers.get("Retry-After")
+                    sleep_s = int(ra) + random.random() if (ra and ra.isdigit()) else backoff(attempt)
+                    print(f"  ⏳ 429(DL). sleep {sleep_s:.1f}s retry...")
+                    time.sleep(sleep_s)
+                    continue
+                r.raise_for_status()
+                return r.content
+            except requests.RequestException as e:
+                sleep_s = backoff(attempt)
+                print(f"  ⚠️ DL error: {e} | sleep {sleep_s:.1f}s retry...")
+                time.sleep(sleep_s)
+        raise RuntimeError("Download failed after retries")
+
+def list_category_files(rs: RobustSession, category: str) -> List[str]:
+    titles = []
+    cmcontinue: Optional[str] = None
+    while True:
         params = {
-            'action': 'query',
-            'list': 'allimages',
-            'aisort': 'name',
-            'aiprefix': 'Tarot',
-            'ailimit': limit,
-            'format': 'json'
+            "action": "query",
+            "list": "categorymembers",
+            "cmtitle": f"Category:{category}",
+            "cmtype": "file",
+            "cmlimit": "200",
+            "format": "json",
         }
-        
-        try:
-            response = self.session.get(self.base_url, params=params)
-            response.raise_for_status()
-            data = response.json()
-            
-            images = data.get('query', {}).get('allimages', [])
-            print(f"✅ Found {len(images)} tarot card images")
-            return images
-        except Exception as e:
-            print(f"❌ Error searching Wikimedia: {e}")
-            return []
-    
-    def get_image_url(self, filename):
-        """Get direct download URL for an image"""
-        params = {
-            'action': 'query',
-            'titles': f'File:{filename}',
-            'prop': 'imageinfo',
-            'iiprop': 'url',
-            'format': 'json'
-        }
-        
-        try:
-            response = self.session.get(self.base_url, params=params)
-            response.raise_for_status()
-            data = response.json()
-            
-            pages = data.get('query', {}).get('pages', {})
-            for page in pages.values():
-                imageinfo = page.get('imageinfo', [])
-                if imageinfo:
-                    return imageinfo[0].get('url')
-        except Exception as e:
-            print(f"❌ Error getting image URL for {filename}: {e}")
-        
-        return None
-    
-    def download_image(self, url, filename):
-        """Download image from URL"""
-        try:
-            print(f"📥 Downloading: {filename}...")
-            response = self.session.get(url, timeout=30)
-            response.raise_for_status()
-            return response.content
-        except Exception as e:
-            print(f"❌ Failed to download {filename}: {e}")
-            return None
+        if cmcontinue:
+            params["cmcontinue"] = cmcontinue
 
+        data = rs.get_json(params)
+        members = data.get("query", {}).get("categorymembers", [])
+        for m in members:
+            t = m.get("title")
+            if t and t.startswith("File:"):
+                titles.append(t)
 
-class S3Uploader:
-    """Upload images to AWS S3"""
-    
-    def __init__(self, bucket_name):
-        self.bucket_name = bucket_name
-        self.s3_client = s3_client
-    
-    def upload_image(self, file_content, s3_key, content_type='image/jpeg'):
-        """Upload image to S3"""
-        try:
-            self.s3_client.put_object(
-                Bucket=self.bucket_name,
-                Key=s3_key,
-                Body=file_content,
-                ContentType=content_type,
-                ACL='public-read'  # Make image publicly accessible
-            )
-            
-            s3_url = f"https://{self.bucket_name}.s3.amazonaws.com/{s3_key}"
-            print(f"✅ Uploaded to S3: {s3_url}")
-            return s3_url
-        except Exception as e:
-            print(f"❌ Failed to upload {s3_key}: {e}")
-            return None
+        cmcontinue = data.get("continue", {}).get("cmcontinue")
+        if not cmcontinue:
+            break
+    return titles
 
+def get_file_url(rs: RobustSession, file_title: str) -> Optional[str]:
+    params = {
+        "action": "query",
+        "titles": file_title,
+        "prop": "imageinfo",
+        "iiprop": "url|size|mime",
+        "format": "json",
+    }
+    data = rs.get_json(params)
+    pages = data.get("query", {}).get("pages", {})
+    for page in pages.values():
+        info = page.get("imageinfo")
+        if info:
+            return info[0].get("url")
+    return None
+
+def rename_rws1909(original_filename: str) -> Tuple[str, Dict[str, Any]]:
+    """
+    RWS1909_-_03_Empress.jpeg -> 03_The_Empress.jpeg (if 00-21)
+    else: sanitize original
+    """
+    meta = {"parsed": False, "kind": "fallback"}
+    p = Path(original_filename)
+    ext = p.suffix.lower()
+    stem = p.stem
+
+    m = re.match(r"^RWS1909.*?(\d{2}).*?([A-Za-z].+)$", stem, re.IGNORECASE)
+    if m:
+        num = int(m.group(1))
+        if 0 <= num <= 21 and num in MAJOR_ARCANA:
+            name = MAJOR_ARCANA[num]
+            meta = {"parsed": True, "kind": "major", "num": num, "name": name}
+            return f"{num:02d}_{name}{ext}", meta
+        tail = slugify(m.group(2))
+        meta = {"parsed": True, "kind": "numbered", "num": num, "tail": tail}
+        return f"{num:02d}_{tail}{ext}", meta
+
+    return f"{slugify(stem)}{ext}", meta
 
 def main():
-    """Main process"""
-    print("=" * 60)
-    print("🔮 Wikimedia Tarot Cards → AWS S3 Uploader")
-    print("=" * 60)
-    
-    downloader = WikimediaDownloader()
-    uploader = S3Uploader(S3_BUCKET)
-    
-    # Search for tarot images
-    images = downloader.search_tarot_images("Tarot", limit=100)
-    
-    if not images:
-        print("❌ No tarot images found")
-        return
-    
-    # Filter and download
-    uploaded_cards = {}
-    
-    for i, image in enumerate(images):
-        filename = image.get('name', '')
-        
-        # Skip if not Rider-Waite related
-        if not any(keyword in filename.lower() for keyword in ['tarot', 'rider', 'waite']):
+    print("=" * 70)
+    print("🃏 RWS1909 Roses & Lilies → Local Downloader (anti-429)")
+    print("=" * 70)
+
+    rs = RobustSession()
+
+    manifest = load_json(MANIFEST_PATH, {
+        "category": CATEGORY,
+        "total_files": 0,
+        "downloaded": [],
+        "failed": [],
+        "by_title": {},  # for resume
+    })
+
+    print(f"🔎 Listing files from Category:{CATEGORY}")
+    titles = list_category_files(rs, CATEGORY)
+    print(f"✅ Found {len(titles)} files.\n")
+
+    manifest["total_files"] = len(titles)
+
+    for idx, title in enumerate(titles, 1):
+        original_filename = title.replace("File:", "", 1)
+
+        # resume: skip already downloaded
+        if title in manifest["by_title"] and manifest["by_title"][title].get("status") == "ok":
+            print(f"[{idx}/{len(titles)}] {original_filename} (skip)")
             continue
-        
-        print(f"\n[{i+1}/{len(images)}] Processing: {filename}")
-        
-        # Get download URL
-        image_url = downloader.get_image_url(filename)
-        if not image_url:
-            continue
-        
-        # Download image
-        file_content = downloader.download_image(image_url, filename)
-        if not file_content:
-            continue
-        
-        # Determine card number and name
-        card_num = None
-        card_name = None
-        
-        # Try to extract card number from filename
-        for num, name in TAROT_CARDS.items():
-            if str(num).zfill(2) in filename or name.replace(' ', '').lower() in filename.lower():
-                card_num = num
-                card_name = name
-                break
-        
-        if card_num is None:
-            # Try fuzzy matching
-            for num, name in TAROT_CARDS.items():
-                if name.lower() in filename.lower():
-                    card_num = num
-                    card_name = name
-                    break
-        
-        if card_num is None:
-            print(f"⚠️  Could not identify card number for {filename}, skipping")
-            continue
-        
-        # Determine file extension
-        ext = Path(filename).suffix.lower()
-        if not ext:
-            ext = '.jpg'
-        
-        # Upload to S3
-        s3_key = f"tarot-cards/{card_num:02d}-{card_name.replace(' ', '-').lower()}{ext}"
-        s3_url = uploader.upload_image(file_content, s3_key)
-        
-        if s3_url:
-            uploaded_cards[card_num] = {
-                "name": card_name,
-                "image_url": s3_url,
-                "s3_key": s3_key
+
+        print(f"[{idx}/{len(titles)}] {original_filename}")
+
+        try:
+            url = get_file_url(rs, title)
+            if not url:
+                raise RuntimeError("no_url")
+
+            new_name, meta = rename_rws1909(original_filename)
+            out_path = OUT_DIR / new_name
+
+            # avoid overwrite collisions
+            if out_path.exists():
+                k = 2
+                while True:
+                    cand = OUT_DIR / f"{out_path.stem}__{k}{out_path.suffix}"
+                    if not cand.exists():
+                        out_path = cand
+                        break
+                    k += 1
+
+            content = rs.download_bytes(url)
+            out_path.write_bytes(content)
+
+            record = {
+                "title": title,
+                "original": original_filename,
+                "source_url": url,
+                "saved_as": out_path.name,
+                "bytes": len(content),
+                "meta": meta,
+                "status": "ok",
             }
-    
-    # Save results to JSON
-    print("\n" + "=" * 60)
-    print(f"✅ Successfully uploaded {len(uploaded_cards)} cards")
-    print("=" * 60)
-    
-    output_file = Path(__file__).parent / 'tarot_cards_urls.json'
-    with open(output_file, 'w') as f:
-        json.dump(uploaded_cards, f, indent=2)
-    
-    print(f"\n📋 Results saved to: {output_file}")
-    print("\n🔗 S3 URLs generated:")
-    for card_num in sorted(uploaded_cards.keys()):
-        card_info = uploaded_cards[card_num]
-        print(f"  {card_num:02d}. {card_info['name']}: {card_info['image_url']}")
-    
-    print("\n✨ Next step: Update backend/app/init_data.py with these URLs")
+            manifest["downloaded"].append(record)
+            manifest["by_title"][title] = {"status": "ok", "saved_as": out_path.name}
 
+            print(f"  ✅ Saved -> {out_path.name} ({len(content)//1024} KB)")
 
-if __name__ == '__main__':
+        except Exception as e:
+            reason = str(e)
+            manifest["failed"].append({"title": title, "original": original_filename, "reason": reason})
+            manifest["by_title"][title] = {"status": "failed", "reason": reason}
+            print(f"  ❌ Failed: {reason}")
+
+        # persist progress each file (safe to Ctrl+C)
+        save_json(MANIFEST_PATH, manifest)
+
+    print("\n" + "=" * 70)
+    print(f"✅ Done. Downloaded: {len(manifest['downloaded'])} | Failed: {len(manifest['failed'])}")
+    print(f"📁 Output dir: {OUT_DIR.resolve()}")
+    print(f"📝 Manifest:  {MANIFEST_PATH.resolve()}")
+    print("=" * 70)
+
+if __name__ == "__main__":
     main()

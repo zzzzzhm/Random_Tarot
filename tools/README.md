@@ -1,14 +1,44 @@
-# 🔮 Tarot Images Download & S3 Upload Tool
+# 🔮 Tarot Images Download & S3 Upload Tools
 
-This tool downloads Rider-Waite tarot card images from Wikimedia Commons and uploads them to AWS S3.
+Collection of tools to manage tarot card images:
+- **Download** from Wikimedia Commons
+- **Upload** to AWS S3
+- **Generate** backend initialization code
 
 ## 📋 Prerequisites
 
 1. **Python 3.8+** installed
-2. **AWS Account** with S3 bucket created
+2. **AWS Account** with S3 bucket created  
 3. **AWS Credentials** (Access Key ID & Secret Access Key)
 
-## 🚀 Quick Start
+## 🚀 Three Workflows
+
+### Workflow 1: Download + Upload in One Go (Recommended for CI/CD)
+
+Use `download_tarot_images.py` - downloads from Wikimedia AND uploads to S3 in one script.
+
+### Workflow 2: Download Locally First, Then Upload (Our Current Use Case)
+
+Use this two-step approach:
+
+1. **`test_download_local.py`** - Downloads images to local disk (no AWS needed yet)
+   ```bash
+   python test_download_local.py
+   ```
+   Creates: `rws1909_roses_lilies/` directory with all card images + `manifest.json`
+
+2. **`upload_local_to_s3.py`** - Uploads pre-downloaded images to S3
+   ```bash
+   python upload_local_to_s3.py
+   ```
+   Reads: `manifest.json` for file metadata
+   Creates: `s3_urls_output.json` with S3 URLs
+   
+   **Best for**: Testing locally first, validating image quality before cloud upload
+
+### Workflow 3: Manual Setup + Upload
+
+Do this if you need to troubleshoot:
 
 ### Step 1: Create S3 Bucket (AWS Console)
 

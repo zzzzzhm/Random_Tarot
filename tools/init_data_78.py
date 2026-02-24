@@ -1,6 +1,7 @@
 from app.models import TarotCard
 from app.database import SessionLocal
 import os
+import random
 
 # CloudFront CDN URL from environment variable
 CLOUDFRONT_BASE = os.getenv("CLOUDFRONT_URL", "https://d17cs34o2wqqpo.cloudfront.net").rstrip("/") + "/tarot"
@@ -949,21 +950,19 @@ def init_sample_data():
     """Initialize all 78 tarot cards"""
     db = SessionLocal()
     try:
-        expected_count = len(TAROT_DATA)
-        existing_ids = {row[0] for row in db.query(TarotCard.id).all()}
-        if len(existing_ids) >= expected_count:
-            print(f"ℹ️  Database already initialized with {len(existing_ids)} cards")
+        # Check if data already exists
+        existing = db.query(TarotCard).first()
+        if existing:
+            print(f"ℹ️  Database already initialized with {db.query(TarotCard).count()} cards")
             return
-
-        allowed_fields = {column.name for column in TarotCard.__table__.columns}
-        missing_cards = [card for card in TAROT_DATA if card["id"] not in existing_ids]
-
-        for card_data in missing_cards:
-            card = TarotCard(**{k: v for k, v in card_data.items() if k in allowed_fields})
+        
+        # Add all 78 cards
+        for card_data in TAROT_DATA:
+            card = TarotCard(**card_data)
             db.add(card)
-
+        
         db.commit()
-        print(f"✅ Added {len(missing_cards)} Tarot cards, total={db.query(TarotCard).count()}")
+        print(f"✅ Initialized {len(TAROT_DATA)} Tarot cards")
     except Exception as e:
         print(f"❌ Failed to initialize data: {e}")
         db.rollback()

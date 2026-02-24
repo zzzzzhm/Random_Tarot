@@ -23,7 +23,7 @@ export function QuestionModal({ isOpen, onClose, onSubmit, spread }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2 className="modal-title">
-          {spread === 1 ? '🃏 Single Card Reading' : '🃏 Three Card Spread'}
+          {spread === 1 ? '🃏 Single Card Reading' : '🃏 Three-Card Spread'}
         </h2>
         
         <p className="modal-subtitle">

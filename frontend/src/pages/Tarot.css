@@ -159,6 +159,15 @@
   margin: 0 0 8px 0;
 }
 
+.position-label {
+  color: #e2e8f0;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  opacity: 0.9;
+}
+
 .orientation {
   font-size: 0.9rem;
   margin: 0 0 8px 0;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import { QuestionModal } from '../components/QuestionModal'
 import './Tarot.css'
@@ -7,6 +7,8 @@ const api = axios.create({
   timeout: 10000,
   withCredentials: false
 })
+
+const THREE_CARD_POSITIONS = ['Past', 'Present', 'Future']
 
 export function Tarot() {
   const [spread, setSpread] = useState(1) // 1 or 3 cards
@@ -44,17 +46,27 @@ export function Tarot() {
 
     try {
       const numCards = spread
-      const newCards = []
+      console.log(`Drawing ${numCards} card(s)`)
+      const response = await api.get('/api/tarot/draw', {
+        params: {
+          count: numCards,
+          _ts: Date.now()
+        },
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      })
+      if (response.data?.error) {
+        throw new Error(response.data.error)
+      }
 
-      // Draw cards one by one
-      for (let i = 0; i < numCards; i++) {
+      const drawnCards = response.data?.cards || []
+      const revealedCards = []
+
+      for (let i = 0; i < drawnCards.length; i++) {
         await new Promise(resolve => setTimeout(resolve, 300))
-
-        console.log(`Fetching card ${i + 1}/${numCards}`)
-        const response = await api.get('/api/tarot/random')
-        console.log(`Card ${i + 1}:`, response.data)
-        newCards.push(response.data)
-        setCards([...newCards])
+        revealedCards.push(drawnCards[i])
+        setCards([...revealedCards])
       }
     } catch (err) {
       console.error('Error:', err)
@@ -99,7 +111,7 @@ export function Tarot() {
           disabled={isFlipping}
         >
           <span className="spread-icon">3️⃣</span>
-          <span className="spread-text">Three Card</span>
+          <span className="spread-text">Three-Card Spread</span>
         </button>
       </div>
 
@@ -127,6 +139,9 @@ export function Tarot() {
               )}
             </div>
             <div className="card-info">
+              {spread === 3 && (
+                <p className="position-label">{THREE_CARD_POSITIONS[index]}</p>
+              )}
               <h3>{card.name}</h3>
               <p className={`orientation ${card.is_reversed ? 'reversed' : 'upright'}`}>
                 {card.is_reversed ? '⬇️ Reversed' : '⬆️ Upright'}
