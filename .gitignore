@@ -49,3 +49,7 @@ build/
 # AWS
 .aws/
 *.pem
+
+# Tools
+tools/tarot_cards_urls.json
+tools/tarot_init_template.py
