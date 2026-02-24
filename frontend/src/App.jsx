@@ -8,6 +8,8 @@ const api = axios.create({
   withCredentials: false
 })
 
+const API_URL = import.meta.env.VITE_API_URL || '/api'
+
 function App() {
   const [card, setCard] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -20,8 +22,8 @@ function App() {
     setDebug('Connecting...')
     
     try {
-      // Log the request
-      const url = '/api/tarot/random'
+      // build URL and log
+      const url = `${API_URL}/tarot/random`
       console.log('Fetching:', url)
       setDebug(`GET ${url}`)
       
