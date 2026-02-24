@@ -8,45 +8,44 @@ const api = axios.create({
   withCredentials: false
 })
 
-const API_URL = import.meta.env.VITE_API_URL || '/api'
-
 function App() {
   const [card, setCard] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [debug, setDebug] = useState('')
+  const [isFlipping, setIsFlipping] = useState(false)
 
   const drawCard = async () => {
+    if (isFlipping) return // Prevent multiple clicks during animation
+    
     setLoading(true)
     setError(null)
-    setDebug('Connecting...')
+    setIsFlipping(true)
     
     try {
-      // build URL and log
-      const url = `${API_URL}/tarot/random`
-      console.log('Fetching:', url)
-      setDebug(`GET ${url}`)
+      console.log('Fetching: /api/tarot/random')
+      const response = await api.get('/api/tarot/random')
+      console.log('Card received:', response.data)
       
-      const response = await api.get(url)
-      console.log('Success:', response.data)
+      // Simulate flip animation timing
+      await new Promise(resolve => setTimeout(resolve, 600))
+      
       setCard(response.data)
-      setDebug('Connected ✓')
     } catch (err) {
       console.error('Error:', err)
       let errMsg = 'Cannot connect to server'
       
       if (err.response) {
-        errMsg = `Server error: ${err.response.status} ${err.response.statusText}`
+        errMsg = `Server error: ${err.response.status}`
       } else if (err.request) {
-        errMsg = 'No response from server - backend not running?'
+        errMsg = 'No response from server'
       } else if (err.message) {
         errMsg = `Network error: ${err.message}`
       }
       
       setError(errMsg)
-      setDebug(`Error: ${err.message}`)
     } finally {
       setLoading(false)
+      setIsFlipping(false)
     }
   }
 
@@ -57,7 +56,7 @@ function App() {
   return (
     <div className="container">
       <div className="card-container">
-        <h1>🔮 Tarot Card</h1>
+        <h1>🔮 Tarot Reading</h1>
         
         {error && (
           <div className="error">
@@ -65,45 +64,76 @@ function App() {
           </div>
         )}
 
-        {debug && (
-          <div style={{
-            background: '#f0f0f0',
-            padding: '8px',
-            marginBottom: '10px',
-            borderRadius: '5px',
-            fontSize: '12px',
-            color: '#666',
-            fontFamily: 'monospace'
-          }}>
-            {debug}
+        <div className="flip-container">
+          <div 
+            className={`flipper ${isFlipping ? 'flipping' : ''} ${card?.is_reversed ? 'reversed' : ''}`}
+          >
+            {/* Card back (initial state) */}
+            <div className="flip-front">
+              <div className="card-back">
+                <span>🔮</span>
+              </div>
+            </div>
+            
+            {/* Card front (after flip) */}
+            <div className="flip-back">
+              {card ? (
+                <div className="card-front">
+                  {card.image_url && (
+                    <img 
+                      src={card.image_url} 
+                      alt={card.name}
+                      className="card-image"
+                    />
+                  )}
+                </div>
+              ) : (
+                <div className="card-back">
+                  <span>🔮</span>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
 
         {card && (
-          <div className="tarot-card">
-            {card.image_url && (
-              <img 
-                src={card.image_url} 
-                alt={card.name}
-                className="card-image"
-              />
-            )}
+          <div className="card-info">
             <h2>{card.name}</h2>
+            
+            <div className="orientation-badge">
+              <span className={card.is_reversed ? 'reversed-text' : 'upright-text'}>
+                {card.orientation}
+              </span>
+            </div>
+
             <p className="description">{card.description}</p>
-            {card.meaning && (
-              <div className="meaning">
-                <strong>Meaning:</strong> {card.meaning}
+            
+            <div className="meanings">
+              <div className="meaning-section">
+                <h4>Current Meaning:</h4>
+                <p className="current-meaning">{card.current_meaning}</p>
               </div>
-            )}
+              
+              <div className="row">
+                <div className="meaning-box upright">
+                  <h5>Upright:</h5>
+                  <p>{card.upright_meaning}</p>
+                </div>
+                <div className="meaning-box reversed">
+                  <h5>Reversed:</h5>
+                  <p>{card.reversed_meaning}</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
         <button 
           onClick={drawCard} 
-          disabled={loading}
+          disabled={loading || isFlipping}
           className="draw-button"
         >
-          {loading ? 'Drawing...' : '✨ Draw Another'}
+          {loading || isFlipping ? 'Flipping...' : '🎰 Draw Card'}
         </button>
       </div>
     </div>

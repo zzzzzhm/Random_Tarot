@@ -4,6 +4,7 @@
   align-items: center;
   min-height: 100vh;
   padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .card-container {
@@ -11,7 +12,7 @@
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
+  max-width: 700px;
   width: 100%;
   text-align: center;
 }
@@ -22,36 +23,191 @@ h1 {
   font-size: 2.5rem;
 }
 
-.tarot-card {
+/* 3D Flip Animation */
+.flip-container {
+  perspective: 1000px;
   margin: 30px 0;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flipper {
+  width: 250px;
+  height: 350px;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flipper.flipping {
+  animation: flip 0.6s ease-in-out;
+}
+
+.flipper.reversed .flip-back {
+  transform: rotateY(180deg) scaleX(-1);
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+.card-back {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 80px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-front {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .card-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-h2 {
+/* Card Info */
+.card-info {
+  margin: 30px 0;
+  text-align: left;
+}
+
+.card-info h2 {
   color: #333;
   font-size: 1.8rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.orientation-badge {
+  display: flex;
+  justify-content: center;
   margin-bottom: 15px;
 }
 
+.orientation-badge span {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.upright-text {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.reversed-text {
+  background: #ffe0b2;
+  color: #e65100;
+}
+
 .description {
-  color: #666;
+  color: #999;
+  margin-bottom: 15px;
+  text-align: center;
+  font-style: italic;
+}
+
+.meanings {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.meaning-section {
   margin-bottom: 20px;
+}
+
+.meaning-section h4 {
+  color: #667eea;
+  margin-bottom: 8px;
+}
+
+.current-meaning {
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 500;
   line-height: 1.6;
 }
 
-.meaning {
-  background: #f0f4ff;
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.meaning-box {
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 8px;
+  background: white;
+  border-left: 4px solid #ccc;
+}
+
+.meaning-box h5 {
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
   color: #333;
-  margin: 20px 0;
+}
+
+.meaning-box p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.meaning-box.upright {
+  border-left-color: #2e7d32;
+}
+
+.meaning-box.upright h5 {
+  color: #2e7d32;
+}
+
+.meaning-box.reversed {
+  border-left-color: #e65100;
+}
+
+.meaning-box.reversed h5 {
+  color: #e65100;
 }
 
 .error {
@@ -72,6 +228,7 @@ h2 {
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   margin-top: 20px;
+  font-weight: 600;
 }
 
 .draw-button:hover:not(:disabled) {
@@ -86,4 +243,32 @@ h2 {
 
 .draw-button:active:not(:disabled) {
   transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .card-container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .flip-container {
+    height: 300px;
+  }
+
+  .flipper {
+    width: 200px;
+    height: 280px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .draw-button {
+    width: 100%;
+  }
 }

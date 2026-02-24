@@ -1,42 +1,47 @@
 from app.models import TarotCard
 from app.database import SessionLocal
 
-# Tarot card initial data
+# Tarot card initial data with full information
 TAROT_DATA = [
     {
         "name": "The Fool",
-        "description": "The Fool Card",
-        "meaning": "New beginnings, freedom, innocence",
-        "upright_meaning": "New possibilities, adventurous spirit",
-        "reversed_meaning": "Recklessness, lack of judgment"
+        "description": "Card 0 of the Major Arcana",
+        "meaning": "New beginnings, taking risks, innocence",
+        "upright_meaning": "New opportunities, adventure, spontaneity",
+        "reversed_meaning": "Recklessness, naivety, poor judgment",
+        "image_url": "/tarot-cards/00-the-fool.png"
     },
     {
         "name": "The Magician",
-        "description": "The Magician Card",
-        "meaning": "Power, skill, wisdom",
-        "upright_meaning": "Self-realization, power",
-        "reversed_meaning": "Lack of confidence, manipulation"
+        "description": "Card 1 of the Major Arcana",
+        "meaning": "Manifestation, resourcefulness, power",
+        "upright_meaning": "Inspiration, clear thinking, new ideas",
+        "reversed_meaning": "Manipulation, poor planning, untapped talents",
+        "image_url": "/tarot-cards/01-the-magician.png"
     },
     {
         "name": "The High Priestess",
-        "description": "The High Priestess Card",
-        "meaning": "Intuition, secrets, wisdom",
-        "upright_meaning": "Inner wisdom, mystery",
-        "reversed_meaning": "Superficiality, lack of discipline"
+        "description": "Card 2 of the Major Arcana",
+        "meaning": "Intuition, sacred knowledge, divine feminine",
+        "upright_meaning": "Wisdom, trust in instincts, inner knowing",
+        "reversed_meaning": "Secrets, disconnection from intuition, confusion",
+        "image_url": "/tarot-cards/02-the-high-priestess.png"
     },
     {
         "name": "The Empress",
-        "description": "The Empress Card",
-        "meaning": "Fertility, abundance, beauty",
-        "upright_meaning": "Creativity, motherhood",
-        "reversed_meaning": "Infertility, dependence"
+        "description": "Card 3 of the Major Arcana",
+        "meaning": "Nurture, abundance, fertility",
+        "upright_meaning": "Creativity, wealth, growth, generosity",
+        "reversed_meaning": "Infertility, emptiness, dependence",
+        "image_url": "/tarot-cards/03-the-empress.png"
     },
     {
         "name": "The Emperor",
-        "description": "The Emperor Card",
-        "meaning": "Power, leadership, authority",
-        "upright_meaning": "Power, leadership",
-        "reversed_meaning": "Weakness, abuse of power"
+        "description": "Card 4 of the Major Arcana",
+        "meaning": "Authority, power, leadership",
+        "upright_meaning": "Strength, stability, structure, control",
+        "reversed_meaning": "Lack of discipline, tyranny, weakness",
+        "image_url": "/tarot-cards/04-the-emperor.png"
     },
 ]
 
