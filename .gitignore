@@ -48,6 +48,15 @@ build/
 
 # AWS
 .aws/
+
+# Local image downloads (不推上去)
+rws1909_roses_lilies/
+tarot_test_download/
+
+# Generated files (不推上去)
+tools/tarot_urls.py
+tools/generate_*.py
+tools/*.json
 *.pem
 
 # Tools
