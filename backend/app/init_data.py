@@ -946,26 +946,36 @@ TAROT_DATA = [
 ]
 
 def init_sample_data():
-    """Initialize all 78 tarot cards"""
+    """Initialize all 78 tarot cards."""
     db = SessionLocal()
     try:
         expected_count = len(TAROT_DATA)
-        existing_ids = {row[0] for row in db.query(TarotCard.id).all()}
-        if len(existing_ids) >= expected_count:
-            print(f"ℹ️  Database already initialized with {len(existing_ids)} cards")
-            return
-
         allowed_fields = {column.name for column in TarotCard.__table__.columns}
-        missing_cards = [card for card in TAROT_DATA if card["id"] not in existing_ids]
 
-        for card_data in missing_cards:
-            card = TarotCard(**{k: v for k, v in card_data.items() if k in allowed_fields})
-            db.add(card)
+        existing_cards = db.query(TarotCard).all()
+        by_id = {card.id: card for card in existing_cards}
+        by_name = {card.name: card for card in existing_cards}
+
+        inserted = 0
+        updated = 0
+
+        for card_data in TAROT_DATA:
+            payload = {k: v for k, v in card_data.items() if k in allowed_fields}
+            existing = by_id.get(card_data["id"]) or by_name.get(card_data["name"])
+
+            if existing:
+                for key, value in payload.items():
+                    setattr(existing, key, value)
+                updated += 1
+            else:
+                db.add(TarotCard(**payload))
+                inserted += 1
 
         db.commit()
-        print(f"✅ Added {len(missing_cards)} Tarot cards, total={db.query(TarotCard).count()}")
+        total = db.query(TarotCard).count()
+        print(f"Added {inserted}, updated {updated}, total={total} (expected={expected_count})")
     except Exception as e:
-        print(f"❌ Failed to initialize data: {e}")
+        print(f"Failed to initialize data: {e}")
         db.rollback()
     finally:
         db.close()
