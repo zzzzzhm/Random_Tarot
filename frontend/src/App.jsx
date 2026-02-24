@@ -2,22 +2,47 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './App.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// Create axios instance with custom config
+const api = axios.create({
+  timeout: 10000,
+  withCredentials: false
+})
 
 function App() {
   const [card, setCard] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [debug, setDebug] = useState('')
 
   const drawCard = async () => {
     setLoading(true)
     setError(null)
+    setDebug('Connecting...')
+    
     try {
-      const response = await axios.get(`${API_URL}/api/tarot/random`)
+      // Log the request
+      const url = '/api/tarot/random'
+      console.log('Fetching:', url)
+      setDebug(`GET ${url}`)
+      
+      const response = await api.get(url)
+      console.log('Success:', response.data)
       setCard(response.data)
+      setDebug('Connected ✓')
     } catch (err) {
-      setError('Cannot connect to server: ' + err.message)
-      console.error(err)
+      console.error('Error:', err)
+      let errMsg = 'Cannot connect to server'
+      
+      if (err.response) {
+        errMsg = `Server error: ${err.response.status} ${err.response.statusText}`
+      } else if (err.request) {
+        errMsg = 'No response from server - backend not running?'
+      } else if (err.message) {
+        errMsg = `Network error: ${err.message}`
+      }
+      
+      setError(errMsg)
+      setDebug(`Error: ${err.message}`)
     } finally {
       setLoading(false)
     }
@@ -35,6 +60,20 @@ function App() {
         {error && (
           <div className="error">
             ⚠️ {error}
+          </div>
+        )}
+
+        {debug && (
+          <div style={{
+            background: '#f0f0f0',
+            padding: '8px',
+            marginBottom: '10px',
+            borderRadius: '5px',
+            fontSize: '12px',
+            color: '#666',
+            fontFamily: 'monospace'
+          }}>
+            {debug}
           </div>
         )}
 
