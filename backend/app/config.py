@@ -2,9 +2,9 @@ import os
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    """应用设置"""
+    """Application settings"""
     
-    # 数据库
+    # Database
     DATABASE_URL: str = "sqlite:///./tarot.db"
     
     # AWS
@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     AWS_REGION: str = os.getenv("AWS_REGION", "us-east-1")
     S3_BUCKET: str = os.getenv("S3_BUCKET", "tarot-images")
     
-    # 应用
+    # Application
     APP_NAME: str = "Random Tarot API"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = os.getenv("DEBUG", "true").lower() == "true"

@@ -4,7 +4,7 @@ from sqlalchemy import func
 from app.models import TarotCard
 
 async def get_random_card(db: Session):
-    """获取随机卡牌"""
+    """Get a random card"""
     count = db.query(func.count(TarotCard.id)).scalar()
     if count == 0:
         return {"error": "No cards in database"}
@@ -23,7 +23,7 @@ async def get_random_card(db: Session):
     }
 
 async def get_all_cards(db: Session):
-    """获取所有卡牌"""
+    """Get all cards"""
     cards = db.query(TarotCard).all()
     return [
         {

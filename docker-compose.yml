@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: tarot-backend
+    container_name: random-tarot-backend
     ports:
       - "8000:8000"
     environment:
@@ -21,7 +21,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: tarot-frontend
+    container_name: random-tarot-frontend
     ports:
       - "3000:3000"
     environment:
@@ -33,7 +33,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: tarot-nginx
+    container_name: random-tarot-nginx
     ports:
       - "80:80"
       - "443:443"

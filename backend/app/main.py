@@ -5,34 +5,34 @@ from app.database import init_db
 from app.routes import router
 from app.init_data import init_sample_data
 
-# 创建应用
+# Create application
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
 )
 
-# 添加 CORS 中间件
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 在生产环境中应限制具体域名
+    allow_origins=["*"],  # In production, restrict to specific domains
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 初始化数据库
+# Initialize database
 @app.on_event("startup")
 async def startup():
-    """应用启动事件"""
+    """Application startup event"""
     init_db()
     init_sample_data()
 
-# 包含路由
+# Include routes
 app.include_router(router)
 
 @app.get("/")
 async def root():
-    """根路由"""
+    """Root route"""
     return {
         "name": settings.APP_NAME,
         "version": settings.APP_VERSION,
@@ -42,7 +42,7 @@ async def root():
 
 @app.get("/health")
 async def health():
-    """健康检查"""
+    """Health check"""
     return {"status": "ok"}
 
 if __name__ == "__main__":

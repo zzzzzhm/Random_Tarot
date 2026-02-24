@@ -16,7 +16,7 @@ function App() {
       const response = await axios.get(`${API_URL}/api/tarot/random`)
       setCard(response.data)
     } catch (err) {
-      setError('无法连接到服务器: ' + err.message)
+      setError('Cannot connect to server: ' + err.message)
       console.error(err)
     } finally {
       setLoading(false)
@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="container">
       <div className="card-container">
-        <h1>🔮 塔罗牌</h1>
+        <h1>🔮 Tarot Card</h1>
         
         {error && (
           <div className="error">
@@ -51,7 +51,7 @@ function App() {
             <p className="description">{card.description}</p>
             {card.meaning && (
               <div className="meaning">
-                <strong>含义:</strong> {card.meaning}
+                <strong>Meaning:</strong> {card.meaning}
               </div>
             )}
           </div>
@@ -62,7 +62,7 @@ function App() {
           disabled={loading}
           className="draw-button"
         >
-          {loading ? '抽牌中...' : '✨ 再抽一张'}
+          {loading ? 'Drawing...' : '✨ Draw Another'}
         </button>
       </div>
     </div>

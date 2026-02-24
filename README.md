@@ -1,6 +1,6 @@
-# 🔮 Random Tarot - 随机塔罗牌网站
+# 🔮 Random Tarot Website
 
-基于 AWS 的现代化全栈应用：React 前端 + FastAPI 后端 + Docker 容器 + GitHub Actions CI/CD + AWS EC2/S3 部署
+A modern full-stack application based on AWS: React Frontend + FastAPI Backend + Docker Containers + GitHub Actions CI/CD + AWS EC2/S3 Deployment
 
 ## 🏗️ 项目架构
 

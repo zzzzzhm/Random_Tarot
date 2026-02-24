@@ -11,7 +11,7 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db():
-    """获取数据库会话"""
+    """Get database session"""
     db = SessionLocal()
     try:
         yield db
@@ -19,6 +19,6 @@ def get_db():
         db.close()
 
 def init_db():
-    """初始化数据库"""
+    """Initialize database"""
     from app.models import Base
     Base.metadata.create_all(bind=engine)

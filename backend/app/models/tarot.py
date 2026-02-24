@@ -4,7 +4,7 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 class TarotCard(Base):
-    """塔罗卡牌模型"""
+    """Tarot Card Model"""
     __tablename__ = "tarot_cards"
 
     id = Column(Integer, primary_key=True, index=True)
