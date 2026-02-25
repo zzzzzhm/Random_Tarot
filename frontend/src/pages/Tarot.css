@@ -7,6 +7,7 @@
   max-width: 1120px;
   margin: 0 auto;
   width: 100%;
+  min-height: 100%;
 }
 
 .tarot-header {
@@ -30,10 +31,11 @@
 
 .tarot-header h1 {
   color: #3f2f4f;
-  font-size: 1.28rem;
-  letter-spacing: 0.01em;
+  font-size: 1.36rem;
+  letter-spacing: 0.02em;
   margin: 0;
   font-weight: 600;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
 }
 
 .tarot-subtitle {
@@ -63,8 +65,9 @@
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.78rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
 }
 
 .spread-btn:hover:not(:disabled) {
@@ -89,7 +92,8 @@
 }
 
 .spread-text {
-  font-size: 0.78rem;
+  font-size: 0.84rem;
+  letter-spacing: 0.02em;
 }
 
 .error-message {
@@ -106,7 +110,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 14px;
-  min-height: 200px;
+  min-height: 46vh;
+  flex: 1;
   align-content: start;
   margin-top: 4px;
 }
@@ -127,6 +132,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
+  min-height: 42vh;
   padding: 46px 20px;
   color: rgba(52, 73, 67, 0.58);
   text-align: center;
@@ -227,7 +233,15 @@
   gap: 8px;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 4px;
+  margin-top: auto;
+  position: sticky;
+  bottom: 16px;
+  z-index: 8;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(242, 247, 240, 0.8);
+  backdrop-filter: blur(6px);
+  align-self: center;
 }
 
 .btn-draw-main {
@@ -236,8 +250,9 @@
   border: 1px solid rgba(67, 97, 82, 0.45);
   color: #233d34;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -258,8 +273,9 @@
   border: 1px solid rgba(66, 96, 82, 0.35);
   color: #2f4a40;
   border-radius: 999px;
-  font-size: 0.79rem;
+  font-size: 0.8rem;
   font-weight: 500;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -303,6 +319,7 @@
 
   .cards-display {
     grid-template-columns: 1fr;
+    min-height: 42vh;
   }
 
   .card-wrapper {
@@ -311,5 +328,10 @@
 
   .spread-btn {
     padding: 7px 10px;
+  }
+
+  .tarot-actions {
+    bottom: 10px;
+    max-width: calc(100vw - 24px);
   }
 }

@@ -19,7 +19,7 @@
     url("/images/monet-water-lilies.jpg");
   background-size: cover;
   background-position: center;
-  opacity: 0.34;
+  opacity: 0.42;
 }
 
 .App::after {
