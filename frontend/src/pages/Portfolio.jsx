@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import './Portfolio.css'
 
 function ProjectCard({ project }) {
@@ -39,15 +39,13 @@ function HobbyCard({ hobby }) {
 }
 
 export function Portfolio() {
-  const [aboutOpen, setAboutOpen] = useState(false)
-
   const projects = useMemo(
     () => [
       {
         title: 'Random Tarot (AWS + FastAPI + CloudFront)',
         description:
           'Tarot draw API + web UI. Images via CloudFront with reliable seeding and cleanup for 78 cards.',
-        tags: ['FastAPI', 'AWS', 'CloudFront', 'SQLAlchemy', 'React'],
+        tags: ['Tarot', 'FastAPI', 'AWS', 'CloudFront', 'SQLAlchemy', 'React'],
         demo: '#',
         github: 'https://github.com/zzzzzhm/Random_Tarot',
       },
@@ -67,6 +65,24 @@ export function Portfolio() {
         demo: '#',
         github: '#',
       },
+    ],
+    [],
+  )
+
+  const keywords = useMemo(
+    () => [
+      'AI Engineer',
+      'Full-Stack',
+      'LLM Apps',
+      'FastAPI',
+      'React',
+      'Tarot Project',
+      'Calm UI',
+      'System Design',
+      'Cloud Deploy',
+      'Data Pipeline',
+      'Open Source',
+      'UCSD',
     ],
     [],
   )
@@ -104,57 +120,23 @@ export function Portfolio() {
       <div className="portfolio-scroll">
         <section id="hero" className="portfolio-section hero-section">
           <div className="section-inner">
-            <header className="hero-top">
-              <p>
-                <span>Zhiming</span> AI Engineer
-              </p>
-              <nav>
-                <button type="button" onClick={() => scrollToSection('projects')}>
-                  Projects
-                </button>
-                <button type="button" onClick={() => scrollToSection('personal')}>
-                  Personal
-                </button>
-              </nav>
-            </header>
-
             <div className="hero-center">
-              <div className="hero-badge">AI systems | calm UI | shipped projects</div>
-              <h1>
-                I build practical AI products
-                <br />
-                with clean, intentional design.
-              </h1>
-              <p>
-                Full-stack + AI/ML. APIs, data pipelines, deployment, and interfaces that feel focused.
-              </p>
+              <h1>Zhiming</h1>
+              <p className="hero-subtitle">Building practical AI products with clean engineering and intentional UI.</p>
+
+              <div className="hero-keywords">
+                {keywords.map((keyword) => (
+                  <span key={keyword}>{keyword}</span>
+                ))}
+              </div>
 
               <div className="hero-actions">
                 <button type="button" className="primary" onClick={() => scrollToSection('projects')}>
                   Projects
                 </button>
-                <a href="https://github.com/zzzzzhm" target="_blank" rel="noreferrer">
-                  GitHub
-                </a>
                 <a href="/resume.pdf">Resume</a>
-              </div>
-            </div>
-
-            <div className="hero-bottom">
-              <div
-                className="about-trigger"
-                onMouseEnter={() => setAboutOpen(true)}
-                onMouseLeave={() => setAboutOpen(false)}
-              >
                 <button type="button" onClick={() => scrollToSection('personal')}>
-                  <span className="about-icon">v</span>
-                  <span>
-                    <strong>About me</strong>
-                    <small>go to Personal</small>
-                    <em className={aboutOpen ? 'open' : ''}>
-                      I enjoy end-to-end systems and creative AI projects with strong engineering quality.
-                    </em>
-                  </span>
+                  Contact
                 </button>
               </div>
             </div>
@@ -166,7 +148,13 @@ export function Portfolio() {
             <div className="section-heading">
               <div>
                 <h2>Featured Projects</h2>
-                <p>3 projects, each with a clear technical story.</p>
+                <p>3 projects, each with a clear technical story and production intent.</p>
+                <div className="project-categories">
+                  <span className="active">Tarot</span>
+                  <span>AI</span>
+                  <span>ML</span>
+                  <span>Web</span>
+                </div>
               </div>
               <button type="button" onClick={() => scrollToSection('personal')}>
                 Next
@@ -208,7 +196,7 @@ export function Portfolio() {
               ))}
             </div>
 
-            <div className="contact-card">
+            <div id="contact" className="contact-card">
               <h3>Say hi</h3>
               <p>
                 Email: <a href="mailto:hezhuang@ucsd.edu">hezhuang@ucsd.edu</a>

@@ -38,6 +38,7 @@
   display: flex;
   flex-direction: column;
   background: transparent;
+  padding-left: 252px;
 }
 
 /* Scrollbar styling */
@@ -66,5 +67,7 @@
 
   .main-content {
     flex: 1;
+    padding-left: 0;
+    padding-top: 132px;
   }
 }

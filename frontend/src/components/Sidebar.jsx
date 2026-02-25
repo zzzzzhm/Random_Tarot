@@ -1,44 +1,31 @@
-import { useState } from 'react'
 import './Sidebar.css'
 
 export function Sidebar({ activePage, onNavigate }) {
-  const [isOpen, setIsOpen] = useState(true)
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen)
-  }
-
   return (
-    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-      <button className="sidebar-toggle" onClick={toggleSidebar}>
-        {isOpen ? '<' : '>'}
-      </button>
+    <aside className="sidebar">
+      <div className="sidebar-brand">Zhiming Portfolio</div>
 
       <nav className="sidebar-nav">
         <div className="nav-section">
+          <p className="nav-heading">Pages</p>
           <button
             className={`nav-item ${activePage === 'portfolio' ? 'active' : ''}`}
-            onClick={() => {
-              onNavigate('portfolio')
-              setIsOpen(false)
-            }}
+            onClick={() => onNavigate('portfolio')}
           >
-            <span className="nav-icon">P</span>
-            {isOpen && <span>Portfolio</span>}
+            <span>Portfolio</span>
           </button>
+        </div>
 
+        <div className="nav-section">
+          <p className="nav-heading">Projects</p>
           <button
             className={`nav-item ${activePage === 'tarot' ? 'active' : ''}`}
-            onClick={() => {
-              onNavigate('tarot')
-              setIsOpen(false)
-            }}
+            onClick={() => onNavigate('tarot')}
           >
-            <span className="nav-icon">T</span>
-            {isOpen && <span>Tarot Reading</span>}
+            <span>Tarot</span>
           </button>
         </div>
       </nav>
-    </div>
+    </aside>
   )
 }

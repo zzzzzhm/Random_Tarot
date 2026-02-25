@@ -2,7 +2,7 @@
   flex: 1;
   height: 100vh;
   overflow: hidden;
-  padding-left: 86px;
+  padding-left: 0;
 }
 
 .portfolio-scroll {
@@ -42,33 +42,9 @@
 }
 
 .hero-section .section-inner {
-  justify-content: space-between;
+  justify-content: center;
 }
 
-.hero-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.hero-top p {
-  margin: 0;
-  color: #38544a;
-  font-size: 0.92rem;
-}
-
-.hero-top p span {
-  font-weight: 700;
-  margin-right: 8px;
-}
-
-.hero-top nav {
-  display: flex;
-  gap: 8px;
-}
-
-.hero-top nav button,
 .section-heading button,
 .section-nav button {
   border: 1px solid rgba(86, 116, 104, 0.28);
@@ -81,7 +57,6 @@
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.hero-top nav button:hover,
 .section-heading button:hover,
 .section-nav button:hover {
   background: rgba(226, 233, 220, 0.9);
@@ -90,32 +65,43 @@
 
 .hero-center {
   text-align: center;
-  max-width: 760px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
-.hero-badge {
-  display: inline-block;
-  border-radius: 999px;
-  border: 1px solid rgba(86, 120, 107, 0.28);
-  background: rgba(236, 242, 230, 0.8);
-  color: #325146;
-  font-size: 0.76rem;
-  padding: 7px 12px;
-}
-
 .hero-center h1 {
-  margin: 16px 0 0;
-  color: #1f352f;
-  font-size: clamp(1.95rem, 4vw, 3.2rem);
+  margin: 0;
+  color: #213932;
+  font-size: clamp(2.5rem, 7vw, 4.4rem);
   line-height: 1.2;
+  letter-spacing: 0.03em;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
 }
 
-.hero-center p {
+.hero-subtitle {
   margin: 14px auto 0;
-  max-width: 620px;
+  max-width: 680px;
   color: #405e53;
   line-height: 1.6;
+  font-size: 1.02rem;
+}
+
+.hero-keywords {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hero-keywords span {
+  border: 1px solid rgba(113, 134, 176, 0.3);
+  background: rgba(243, 246, 240, 0.9);
+  color: #325146;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 0.83rem;
+  font-weight: 600;
 }
 
 .hero-actions {
@@ -155,69 +141,6 @@
   background: #264036;
 }
 
-.hero-bottom {
-  display: flex;
-  justify-content: center;
-}
-
-.about-trigger button {
-  border: 1px solid rgba(84, 116, 103, 0.34);
-  background: rgba(242, 246, 238, 0.86);
-  border-radius: 16px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  cursor: pointer;
-  text-align: left;
-  max-width: 600px;
-}
-
-.about-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  border: 1px solid rgba(84, 116, 103, 0.3);
-  background: rgba(231, 237, 226, 0.8);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #304e43;
-  font-size: 0.95rem;
-}
-
-.about-trigger strong {
-  display: inline-block;
-  color: #1f3731;
-  font-size: 0.95rem;
-}
-
-.about-trigger small {
-  display: block;
-  margin-top: 1px;
-  color: #58786c;
-  font-size: 0.75rem;
-}
-
-.about-trigger em {
-  display: block;
-  margin-top: 0;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  color: #3f6155;
-  font-size: 0.8rem;
-  line-height: 1.45;
-  transition: max-height 0.28s ease, opacity 0.28s ease, margin-top 0.28s ease;
-  font-style: normal;
-}
-
-.about-trigger em.open {
-  margin-top: 8px;
-  max-height: 60px;
-  opacity: 1;
-}
-
 .section-heading {
   display: flex;
   align-items: flex-end;
@@ -235,6 +158,29 @@
   margin: 6px 0 0;
   color: #46675b;
   font-size: 0.9rem;
+}
+
+.project-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.project-categories span {
+  border: 1px solid rgba(88, 120, 107, 0.24);
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: rgba(237, 243, 231, 0.8);
+  color: #3a5d50;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.project-categories .active {
+  background: rgba(110, 146, 129, 0.22);
+  border-color: rgba(63, 104, 86, 0.44);
+  color: #214137;
 }
 
 .project-grid,
@@ -341,10 +287,6 @@
 }
 
 @media (max-width: 960px) {
-  .portfolio-container {
-    padding-left: 76px;
-  }
-
   .project-grid,
   .hobby-grid {
     grid-template-columns: 1fr;
@@ -352,10 +294,6 @@
 }
 
 @media (max-width: 768px) {
-  .portfolio-container {
-    padding-left: 0;
-  }
-
   .portfolio-section {
     padding: 64px 12px 16px;
   }
@@ -363,11 +301,6 @@
   .section-inner {
     min-height: calc(100vh - 80px);
     padding: 20px;
-  }
-
-  .hero-top {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .hero-actions {
