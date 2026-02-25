@@ -121,7 +121,7 @@ export function Portfolio() {
         <section id="hero" className="portfolio-section hero-section">
           <div className="section-inner">
             <div className="hero-center">
-              <h1>Zhiming</h1>
+              <h1>Hengmeng Zhuang</h1>
               <p className="hero-subtitle">Building practical AI products with clean engineering and intentional UI.</p>
 
               <div className="hero-keywords">

@@ -2,7 +2,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 18px 20px 26px;
+  padding: 34px 20px 34px;
   gap: 20px;
   max-width: 1120px;
   margin: 0 auto;
@@ -16,6 +16,7 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  margin-top: 8px;
 }
 
 .title-pill {
@@ -24,9 +25,9 @@
   justify-content: center;
   padding: 8px 26px;
   border-radius: 999px;
-  background: rgba(184, 157, 214, 0.18);
-  border: 1px solid rgba(147, 117, 182, 0.38);
-  box-shadow: 0 8px 18px rgba(110, 84, 138, 0.12);
+  background: rgba(189, 167, 214, 0.24);
+  border: 1px solid rgba(147, 117, 182, 0.28);
+  box-shadow: 0 8px 18px rgba(110, 84, 138, 0.09);
 }
 
 .tarot-header h1 {
@@ -59,7 +60,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
-  background: rgba(247, 249, 243, 0.75);
+  background: rgba(247, 249, 243, 0.66);
   border: 1px solid rgba(90, 117, 103, 0.26);
   color: #355046;
   border-radius: 999px;
@@ -76,10 +77,10 @@
 }
 
 .spread-btn.active {
-  background: rgba(116, 151, 131, 0.2);
-  border-color: rgba(65, 97, 83, 0.55);
+  background: rgba(127, 163, 143, 0.28);
+  border-color: rgba(65, 97, 83, 0.42);
   color: #213d34;
-  box-shadow: 0 6px 16px rgba(59, 85, 75, 0.12);
+  box-shadow: 0 6px 16px rgba(59, 85, 75, 0.08);
 }
 
 .spread-btn:disabled {
@@ -186,7 +187,7 @@
 
 .card-info {
   padding: 9px 10px;
-  background: rgba(247, 250, 244, 0.58);
+  background: rgba(247, 250, 244, 0.5);
   border-radius: 10px;
   border: 1px solid rgba(93, 121, 106, 0.18);
 }
@@ -235,19 +236,19 @@
   flex-wrap: wrap;
   margin-top: auto;
   position: sticky;
-  bottom: 16px;
+  bottom: 34px;
   z-index: 8;
   padding: 10px 12px;
   border-radius: 999px;
-  background: rgba(242, 247, 240, 0.8);
+  background: rgba(242, 247, 240, 0.64);
   backdrop-filter: blur(6px);
   align-self: center;
 }
 
 .btn-draw-main {
   padding: 8px 16px;
-  background: rgba(98, 134, 115, 0.2);
-  border: 1px solid rgba(67, 97, 82, 0.45);
+  background: rgba(113, 150, 130, 0.3);
+  border: 1px solid rgba(67, 97, 82, 0.34);
   color: #233d34;
   border-radius: 999px;
   font-size: 0.82rem;
@@ -269,7 +270,7 @@
 
 .btn-reset {
   padding: 8px 14px;
-  background: rgba(246, 248, 242, 0.7);
+  background: rgba(232, 220, 194, 0.34);
   border: 1px solid rgba(66, 96, 82, 0.35);
   color: #2f4a40;
   border-radius: 999px;
@@ -281,7 +282,7 @@
 }
 
 .btn-reset:hover {
-  background: rgba(232, 239, 229, 0.85);
+  background: rgba(226, 212, 184, 0.42);
 }
 
 .loading-indicator {
@@ -310,7 +311,7 @@
 
 @media (max-width: 768px) {
   .tarot-container {
-    padding: 14px 10px 20px;
+    padding: 24px 10px 24px;
   }
 
   .tarot-header h1 {
@@ -331,7 +332,7 @@
   }
 
   .tarot-actions {
-    bottom: 10px;
+    bottom: 20px;
     max-width: calc(100vw - 24px);
   }
 }

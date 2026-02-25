@@ -34,7 +34,10 @@
   border-radius: 24px;
   border: 1px solid rgba(83, 113, 101, 0.18);
   background:
-    linear-gradient(170deg, rgba(246, 248, 239, 0.9), rgba(237, 241, 230, 0.84));
+    linear-gradient(170deg, rgba(246, 248, 239, 0.74), rgba(237, 241, 230, 0.68)),
+    url("/images/monet-water-lilies.jpg");
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 16px 36px rgba(49, 73, 64, 0.09);
   padding: 28px;
   display: flex;
@@ -42,7 +45,7 @@
 }
 
 .hero-section .section-inner {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .section-heading button,
@@ -67,12 +70,13 @@
   text-align: center;
   max-width: 860px;
   margin: 0 auto;
+  padding-top: 80px;
 }
 
 .hero-center h1 {
   margin: 0;
   color: #213932;
-  font-size: clamp(2.5rem, 7vw, 4.4rem);
+  font-size: clamp(1.8rem, 4.6vw, 2.8rem);
   line-height: 1.2;
   letter-spacing: 0.03em;
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
@@ -87,7 +91,7 @@
 }
 
 .hero-keywords {
-  margin-top: 24px;
+  margin-top: 18px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -95,8 +99,8 @@
 }
 
 .hero-keywords span {
-  border: 1px solid rgba(113, 134, 176, 0.3);
-  background: rgba(243, 246, 240, 0.9);
+  border: 1px solid rgba(113, 134, 176, 0.22);
+  background: rgba(243, 246, 240, 0.76);
   color: #325146;
   border-radius: 10px;
   padding: 6px 10px;
@@ -104,12 +108,32 @@
   font-weight: 600;
 }
 
+.hero-keywords span:nth-child(4n + 1) {
+  background: rgba(183, 204, 232, 0.34);
+  border-color: rgba(109, 136, 171, 0.28);
+}
+
+.hero-keywords span:nth-child(4n + 2) {
+  background: rgba(198, 220, 194, 0.34);
+  border-color: rgba(123, 155, 117, 0.28);
+}
+
+.hero-keywords span:nth-child(4n + 3) {
+  background: rgba(233, 211, 187, 0.34);
+  border-color: rgba(173, 137, 102, 0.26);
+}
+
+.hero-keywords span:nth-child(4n + 4) {
+  background: rgba(219, 204, 233, 0.34);
+  border-color: rgba(145, 122, 175, 0.28);
+}
+
 .hero-actions {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 26px;
+  margin-top: 22px;
 }
 
 .hero-actions a,
@@ -126,19 +150,19 @@
 }
 
 .hero-actions .primary {
-  background: #2f4b41;
+  background: rgba(88, 126, 111, 0.86);
   color: #f5f8ef;
-  border-color: #2f4b41;
+  border-color: rgba(75, 111, 96, 0.92);
 }
 
 .hero-actions a:hover,
 .hero-actions button:hover {
   transform: translateY(-1px);
-  background: rgba(226, 233, 220, 0.95);
+  background: rgba(220, 231, 217, 0.95);
 }
 
 .hero-actions .primary:hover {
-  background: #264036;
+  background: rgba(73, 111, 96, 0.9);
 }
 
 .section-heading {
@@ -171,15 +195,15 @@
   border: 1px solid rgba(88, 120, 107, 0.24);
   border-radius: 999px;
   padding: 4px 10px;
-  background: rgba(237, 243, 231, 0.8);
+  background: rgba(237, 243, 231, 0.66);
   color: #3a5d50;
   font-size: 0.76rem;
   font-weight: 600;
 }
 
 .project-categories .active {
-  background: rgba(110, 146, 129, 0.22);
-  border-color: rgba(63, 104, 86, 0.44);
+  background: rgba(124, 162, 144, 0.3);
+  border-color: rgba(63, 104, 86, 0.34);
   color: #214137;
 }
 
@@ -248,12 +272,24 @@
 }
 
 .project-tags span {
-  border: 1px solid rgba(88, 120, 107, 0.28);
+  border: 1px solid rgba(88, 120, 107, 0.22);
   border-radius: 999px;
-  background: rgba(232, 238, 227, 0.85);
+  background: rgba(232, 238, 227, 0.66);
   color: #35584b;
   font-size: 0.76rem;
   padding: 5px 10px;
+}
+
+.project-tags span:nth-child(3n + 1) {
+  background: rgba(182, 206, 229, 0.28);
+}
+
+.project-tags span:nth-child(3n + 2) {
+  background: rgba(199, 220, 190, 0.28);
+}
+
+.project-tags span:nth-child(3n + 3) {
+  background: rgba(234, 215, 193, 0.28);
 }
 
 .section-nav {
@@ -301,6 +337,10 @@
   .section-inner {
     min-height: calc(100vh - 80px);
     padding: 20px;
+  }
+
+  .hero-center {
+    padding-top: 30px;
   }
 
   .hero-actions {
