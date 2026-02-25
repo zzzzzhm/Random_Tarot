@@ -1,13 +1,35 @@
 .App {
   display: flex;
   height: 100vh;
-  background:
-    linear-gradient(180deg, rgba(243, 244, 232, 0.92), rgba(239, 241, 227, 0.9)),
-    radial-gradient(circle at 15% 20%, rgba(96, 141, 122, 0.14), transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(138, 167, 145, 0.12), transparent 42%);
+  position: relative;
+  isolation: isolate;
+  background: #edf0e7;
   color: #243332;
   font-family: "Avenir Next", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
+}
+
+.App::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(244, 248, 245, 0.86), rgba(233, 240, 236, 0.88)),
+    url("/images/monet-water-lilies.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.34;
+}
+
+.App::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(127, 149, 186, 0.08), transparent 38%),
+    radial-gradient(circle at 76% 72%, rgba(105, 150, 137, 0.1), transparent 44%);
 }
 
 .main-content {

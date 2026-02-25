@@ -90,7 +90,9 @@ export function Tarot() {
   return (
     <div className="tarot-container">
       <div className="tarot-header">
-        <h1>Tarot Reading</h1>
+        <div className="title-pill">
+          <h1>Tarot Reading</h1>
+        </div>
         <p className="tarot-subtitle">
           {currentQuestion && `Question: "${currentQuestion}"`}
         </p>
@@ -117,7 +119,9 @@ export function Tarot() {
 
       {error && <div className="error-message">{error}</div>}
 
-      <div className="cards-display">
+      <div
+        className={`cards-display ${cards.length > 0 ? 'has-cards' : ''} ${cards.length === 1 ? 'single-card' : ''}`}
+      >
         {cards.length === 0 && !isFlipping && (
           <div className="empty-state">
             <div className="empty-icon">...</div>
