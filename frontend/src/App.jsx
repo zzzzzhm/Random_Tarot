@@ -5,7 +5,7 @@ import { Tarot } from './pages/Tarot'
 import './App.css'
 
 function App() {
-  const [activePage, setActivePage] = useState('tarot')
+  const [activePage, setActivePage] = useState('portfolio')
 
   const renderPage = () => {
     switch (activePage) {
