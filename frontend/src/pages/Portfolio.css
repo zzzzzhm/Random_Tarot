@@ -217,28 +217,43 @@
   font-size: 0.9rem;
 }
 
+/* =========================================
+   修改部分：项目分类标签 (Project Categories)
+   扩宽、纯色、极简并增加 Hover 动画
+========================================= */
 .project-categories {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 12px; /* 增加标签之间的间距 */
+  margin-top: 16px;
+  margin-bottom: 12px;
 }
 
 .project-categories span {
-  border: 1px solid rgba(88, 120, 107, 0.24);
-  border-radius: 999px;
-  padding: 4px 10px;
-  background: rgba(237, 243, 231, 0.66);
-  color: #3a5d50;
-  font-size: 0.76rem;
-  font-weight: 600;
+  border: none; /* 移除边框，纯色更极简 */
+  border-radius: 999px; /* 胶囊状圆角 */
+  padding: 8px 22px; /* 左右增加大内边距，让标签变宽 */
+  background: rgba(230, 237, 225, 0.85); /* 柔和的浅绿色底色 */
+  color: #405e53; /* 配合背景的深绿文字 */
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out; /* 添加平滑的颜色过渡动画 */
 }
 
-.project-categories .active {
-  background: rgba(124, 162, 144, 0.3);
-  border-color: rgba(63, 104, 86, 0.34);
-  color: #214137;
+/* 鼠标悬停变色效果 */
+.project-categories span:hover {
+  background: rgba(210, 222, 205, 0.95); /* 稍微变深的底色 */
+  color: #213932;
 }
+
+/* 选中状态 */
+.project-categories .active {
+  background: #2a453d; /* 纯正的深墨绿 */
+  color: #f5f8ef; /* 偏米白的文字 */
+  box-shadow: 0 4px 12px rgba(42, 69, 61, 0.15); /* 加一点微弱的阴影让它浮起来 */
+}
+/* ========================================= */
 
 .project-grid,
 .hobby-grid {
@@ -255,6 +270,14 @@
   border-radius: 16px;
   background: rgba(244, 247, 240, 0.84);
   padding: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 给卡片也顺手加一点微小的 hover 浮动效果，看起来更有质感 */
+.project-card:hover,
+.hobby-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(49, 73, 64, 0.06);
 }
 
 .project-card-header {
@@ -346,6 +369,12 @@
   border-radius: 999px;
   padding: 8px 12px;
   background: rgba(236, 242, 230, 0.78);
+  transition: background 0.2s ease;
+}
+
+.contact-links a:hover {
+  background: rgba(210, 222, 205, 0.9);
+  text-decoration: none;
 }
 
 .section-inner footer {

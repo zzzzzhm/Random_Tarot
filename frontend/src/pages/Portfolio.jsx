@@ -42,28 +42,28 @@ export function Portfolio() {
   const projects = useMemo(
     () => [
       {
-        title: 'Random Tarot (AWS + FastAPI + CloudFront)',
+        title: 'Job Filtering Agent',
         description:
-          'Tarot draw API + web UI. Images via CloudFront with reliable seeding and cleanup for 78 cards.',
-        tags: ['Tarot', 'FastAPI', 'AWS', 'CloudFront', 'SQLAlchemy', 'React'],
-        demo: '#',
+          'An automated Python-based agentic workflow to scrape, filter, and score job postings based on technical requirements.',
+        tags: ['Python', 'Automation', 'LLM', 'Data Pipeline'],
+        demo: '', // 如果没有在线 Demo 可以留空
+        github: 'https://github.com/zzzzzhm/Job_agent',
+      },
+      {
+        title: 'Random Tarot (AWS)',
+        description:
+          'Full-stack tarot reading application supporting multi-card spreads and interactive interpretations, deployed on AWS.',
+        tags: ['React', 'FastAPI', 'AWS', 'Docker'],
+        demo: '', 
         github: 'https://github.com/zzzzzhm/Random_Tarot',
       },
       {
-        title: 'AI Chat Assistant (Agent + RAG)',
+        title: 'Tarot Card Generator',
         description:
-          'Lightweight assistant with memory and tool calling for practical daily workflows.',
-        tags: ['Python', 'Agents', 'RAG', 'LLM'],
-        demo: '#',
-        github: '#',
-      },
-      {
-        title: 'Symbolic Music Generation',
-        description:
-          'Markov and Transformer experiments evaluated with perplexity and pitch-distribution metrics.',
-        tags: ['PyTorch', 'MIDI', 'Transformer'],
-        demo: '#',
-        github: '#',
+          'A two-stage layout-to-image pipeline using a fine-tuned Stable Diffusion LoRA to generate a complete 78-card deck.',
+        tags: ['Stable Diffusion', 'Python', 'LoRA', 'GenAI'],
+        demo: '', 
+        github: 'https://github.com/zzzzzhm/tarot-deck-lora', // 如果还没开源可以留空
       },
     ],
     [],
@@ -71,18 +71,19 @@ export function Portfolio() {
 
   const keywords = useMemo(
     () => [
-      'AI Engineer',
-      'Full-Stack',
-      'LLM Apps',
+      'Software Engineer',
+      'Backend / DevOps',
+      'Python',
+      'AWS',
       'FastAPI',
-      'React',
-      'Tarot Project',
-      'Calm UI',
-      'System Design',
-      'Cloud Deploy',
-      'Data Pipeline',
-      'Open Source',
+      'Docker',
       'UCSD',
+      '🧗 Rock Climbing',
+      '🏸 Badminton',
+      '🥾 Hiking',
+      'RAG',
+      'Agents',
+      'React',
     ],
     [],
   )
@@ -90,20 +91,20 @@ export function Portfolio() {
   const hobbies = useMemo(
     () => [
       {
-        title: 'Tarot and Symbolism',
+        title: '🧗 Rock Climbing',
+        description: 'Solving physical puzzles on the wall and pushing my mental limits.',
+      },
+      {
+        title: '🏸 Badminton',
+        description: 'Enjoying fast-paced rallies, quick reflexes, and friendly competition.',
+      },
+      {
+        title: '🥾 Hiking',
+        description: 'Disconnecting from screens and finding clarity on the trails.',
+      },
+      {
+        title: '🃏 Tarot & Symbolism', // 保留了你原来的一个特色爱好
         description: 'Meaning systems and visual storytelling keep my product thinking grounded.',
-      },
-      {
-        title: 'Music Generation',
-        description: 'I like turning patterns into sound with model-driven experimentation.',
-      },
-      {
-        title: 'Strategy Games',
-        description: 'Constraint-based decision making sharpens engineering tradeoff judgement.',
-      },
-      {
-        title: 'Journaling in Cafes',
-        description: 'Writing helps me clarify product direction and execution details.',
       },
     ],
     [],
