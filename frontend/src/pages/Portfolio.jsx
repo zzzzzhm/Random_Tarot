@@ -125,7 +125,8 @@ export function Portfolio() {
           <div className="section-inner">
             <div className="intro-center">
               <h1>Hengmeng Zhuang</h1>
-              <p className="intro-subtitle">Building practical AI products with clean engineering and intentional UI.</p>
+              {/* 更换为硬核的 SDE 背景描述 */}
+              <p className="intro-subtitle">Engineering scalable backend systems and robust infrastructure for AI applications.</p>
 
               <div className="intro-keywords">
                 {keywords.map((keyword) => (
@@ -133,8 +134,9 @@ export function Portfolio() {
                 ))}
               </div>
 
+              {/* 去掉了 primary 类名，所有按钮一视同仁 */}
               <div className="intro-actions">
-                <button type="button" className="primary" onClick={() => scrollToSection('projects')}>
+                <button type="button" onClick={() => scrollToSection('projects')}>
                   Projects
                 </button>
                 <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
@@ -154,7 +156,8 @@ export function Portfolio() {
                 <h2>Featured Projects</h2>
                 <p>3 projects, each with a clear technical story and production intent.</p>
                 <div className="project-categories">
-                  <span className="active">All</span>
+                  {/* 去掉了 active 类名，平等展示 */}
+                  <span>All</span>
                   <span>Backend / DevOps</span>
                   <span>GenAI</span>
                 </div>

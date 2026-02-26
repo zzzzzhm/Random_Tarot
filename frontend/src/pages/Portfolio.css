@@ -98,7 +98,7 @@
 .intro-keywords span:nth-child(4n + 3) { background: rgba(233, 211, 187, 0.34); border-color: rgba(173, 137, 102, 0.26); }
 .intro-keywords span:nth-child(4n + 4) { background: rgba(219, 204, 233, 0.34); border-color: rgba(145, 122, 175, 0.28); }
 
-/* 纯色小框按钮设计 */
+/* 纯色小方框按钮设计 (平等展示，去除强引导) */
 .intro-actions {
   display: flex;
   justify-content: center;
@@ -121,22 +121,12 @@
   transition: all 0.2s ease;
 }
 
-.intro-actions .primary {
-  background: #2b4c3b;
-  color: #ffffff;
-  border-color: #2b4c3b;
-}
-
+/* Hover 鼠标悬停时的变色效果 */
 .intro-actions a:hover,
 .intro-actions button:hover {
   background: #e2e9dc; 
   transform: translateY(-2px); 
 }
-
-.intro-actions .primary:hover {
-  background: #1e3629; 
-}
-
 
 /* =========================================
    其他模块通用样式
@@ -204,6 +194,7 @@
   color: #213932;
 }
 
+/* （保留 active 类作为备用，供你未来加点击逻辑时使用，当前已不在 JSX 中默认应用） */
 .project-categories .active {
   background: #2a453d; 
   color: #f5f8ef; 
