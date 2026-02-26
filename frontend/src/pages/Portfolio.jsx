@@ -46,7 +46,7 @@ export function Portfolio() {
         description:
           'An automated Python-based agentic workflow to scrape, filter, and score job postings based on technical requirements.',
         tags: ['Python', 'Automation', 'LLM', 'Data Pipeline'],
-        demo: '', // 如果没有在线 Demo 可以留空
+        demo: '', 
         github: 'https://github.com/zzzzzhm/Job_agent',
       },
       {
@@ -63,7 +63,7 @@ export function Portfolio() {
           'A two-stage layout-to-image pipeline using a fine-tuned Stable Diffusion LoRA to generate a complete 78-card deck.',
         tags: ['Stable Diffusion', 'Python', 'LoRA', 'GenAI'],
         demo: '', 
-        github: 'https://github.com/zzzzzhm/tarot-deck-lora', // 如果还没开源可以留空
+        github: 'https://github.com/zzzzzhm/tarot-deck-lora', 
       },
     ],
     [],
@@ -103,7 +103,7 @@ export function Portfolio() {
         description: 'Disconnecting from screens and finding clarity on the trails.',
       },
       {
-        title: '🃏 Tarot & Symbolism', // 保留了你原来的一个特色爱好
+        title: '🃏 Tarot & Symbolism',
         description: 'Meaning systems and visual storytelling keep my product thinking grounded.',
       },
     ],
@@ -119,23 +119,25 @@ export function Portfolio() {
   return (
     <div className="portfolio-container">
       <div className="portfolio-scroll">
-        <section id="hero" className="portfolio-section hero-section">
+        
+        {/* Intro 区域 */}
+        <section id="intro" className="portfolio-section intro-section">
           <div className="section-inner">
-            <div className="hero-center">
+            <div className="intro-center">
               <h1>Hengmeng Zhuang</h1>
-              <p className="hero-subtitle">Building practical AI products with clean engineering and intentional UI.</p>
+              <p className="intro-subtitle">Building practical AI products with clean engineering and intentional UI.</p>
 
-              <div className="hero-keywords">
+              <div className="intro-keywords">
                 {keywords.map((keyword) => (
                   <span key={keyword}>{keyword}</span>
                 ))}
               </div>
 
-              <div className="hero-actions">
+              <div className="intro-actions">
                 <button type="button" className="primary" onClick={() => scrollToSection('projects')}>
                   Projects
                 </button>
-                <a href="/resume.pdf">Resume</a>
+                <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
                 <button type="button" onClick={() => scrollToSection('personal')}>
                   Contact
                 </button>
@@ -144,6 +146,7 @@ export function Portfolio() {
           </div>
         </section>
 
+        {/* Projects 区域 */}
         <section id="projects" className="portfolio-section">
           <div className="section-inner">
             <div className="section-heading">
@@ -151,10 +154,9 @@ export function Portfolio() {
                 <h2>Featured Projects</h2>
                 <p>3 projects, each with a clear technical story and production intent.</p>
                 <div className="project-categories">
-                  <span className="active">Tarot</span>
-                  <span>AI</span>
-                  <span>ML</span>
-                  <span>Web</span>
+                  <span className="active">All</span>
+                  <span>Backend / DevOps</span>
+                  <span>GenAI</span>
                 </div>
               </div>
               <button type="button" onClick={() => scrollToSection('personal')}>
@@ -169,8 +171,8 @@ export function Portfolio() {
             </div>
 
             <div className="section-nav">
-              <button type="button" onClick={() => scrollToSection('hero')}>
-                Back to Hero
+              <button type="button" onClick={() => scrollToSection('intro')}>
+                Back to Top
               </button>
               <button type="button" onClick={() => scrollToSection('personal')}>
                 Personal
@@ -179,6 +181,7 @@ export function Portfolio() {
           </div>
         </section>
 
+        {/* Personal 区域 */}
         <section id="personal" className="portfolio-section">
           <div className="section-inner">
             <div className="section-heading">
@@ -186,8 +189,8 @@ export function Portfolio() {
                 <h2>Personal</h2>
                 <p>The human side that shapes how I build and collaborate.</p>
               </div>
-              <button type="button" onClick={() => scrollToSection('hero')}>
-                Back
+              <button type="button" onClick={() => scrollToSection('intro')}>
+                Back to Top
               </button>
             </div>
 
@@ -206,7 +209,7 @@ export function Portfolio() {
                 <a href="https://github.com/zzzzzhm" target="_blank" rel="noreferrer">
                   GitHub
                 </a>
-                <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
+                <a href="https://www.linkedin.com/in/hengmeng-zhuang-a91595355/" target="_blank" rel="noreferrer">
                   LinkedIn
                 </a>
               </div>
@@ -215,6 +218,7 @@ export function Portfolio() {
             <footer>{`Copyright ${new Date().getFullYear()} | React | scroll-snap`}</footer>
           </div>
         </section>
+
       </div>
     </div>
   )

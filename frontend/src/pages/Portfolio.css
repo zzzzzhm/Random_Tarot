@@ -44,8 +44,120 @@
   flex-direction: column;
 }
 
-.hero-section .section-inner {
-  justify-content: flex-start;
+/* =========================================
+   Intro Section (主页介绍区) - 完美居中
+========================================= */
+.intro-section .section-inner {
+  justify-content: center; 
+}
+
+.intro-center {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.intro-center h1 {
+  margin: 0;
+  color: #213932;
+  font-size: clamp(1.8rem, 4.6vw, 2.8rem);
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
+}
+
+.intro-subtitle {
+  margin: 14px auto 0;
+  max-width: 680px;
+  color: #405e53;
+  line-height: 1.6;
+  font-size: 1.02rem;
+}
+
+/* 技能关键字标签 */
+.intro-keywords {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.intro-keywords span {
+  border: 1px solid rgba(113, 134, 176, 0.22);
+  background: rgba(243, 246, 240, 0.76);
+  color: #325146;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+
+.intro-keywords span:nth-child(4n + 1) { background: rgba(183, 204, 232, 0.34); border-color: rgba(109, 136, 171, 0.28); }
+.intro-keywords span:nth-child(4n + 2) { background: rgba(198, 220, 194, 0.34); border-color: rgba(123, 155, 117, 0.28); }
+.intro-keywords span:nth-child(4n + 3) { background: rgba(233, 211, 187, 0.34); border-color: rgba(173, 137, 102, 0.26); }
+.intro-keywords span:nth-child(4n + 4) { background: rgba(219, 204, 233, 0.34); border-color: rgba(145, 122, 175, 0.28); }
+
+/* 纯色小框按钮设计 */
+.intro-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.intro-actions a,
+.intro-actions button {
+  border-radius: 8px; 
+  border: 1px solid rgba(84, 116, 103, 0.2);
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: #234238;
+  background: #f4f7f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.intro-actions .primary {
+  background: #2b4c3b;
+  color: #ffffff;
+  border-color: #2b4c3b;
+}
+
+.intro-actions a:hover,
+.intro-actions button:hover {
+  background: #e2e9dc; 
+  transform: translateY(-2px); 
+}
+
+.intro-actions .primary:hover {
+  background: #1e3629; 
+}
+
+
+/* =========================================
+   其他模块通用样式
+========================================= */
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #243d35;
+  font-size: 1.35rem;
+}
+
+.section-heading p {
+  margin: 6px 0 0;
+  color: #46675b;
+  font-size: 0.9rem;
 }
 
 .section-heading button,
@@ -66,195 +178,39 @@
   transform: translateY(-1px);
 }
 
-.hero-center {
-  text-align: center;
-  max-width: 860px;
-  margin: 0 auto;
-  padding-top: 118px;
-}
-
-.hero-center h1 {
-  margin: 0;
-  color: #213932;
-  font-size: clamp(1.8rem, 4.6vw, 2.8rem);
-  line-height: 1.2;
-  letter-spacing: 0.03em;
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
-}
-
-.hero-subtitle {
-  margin: 14px auto 0;
-  max-width: 680px;
-  color: #405e53;
-  line-height: 1.6;
-  font-size: 1.02rem;
-}
-
-.hero-keywords {
-  margin-top: 18px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
-
-.hero-keywords span {
-  border: 1px solid rgba(113, 134, 176, 0.22);
-  background: rgba(243, 246, 240, 0.76);
-  color: #325146;
-  border-radius: 10px;
-  padding: 6px 10px;
-  font-size: 0.83rem;
-  font-weight: 600;
-}
-
-.hero-keywords span:nth-child(4n + 1) {
-  background: rgba(183, 204, 232, 0.34);
-  border-color: rgba(109, 136, 171, 0.28);
-}
-
-.hero-keywords span:nth-child(4n + 2) {
-  background: rgba(198, 220, 194, 0.34);
-  border-color: rgba(123, 155, 117, 0.28);
-}
-
-.hero-keywords span:nth-child(4n + 3) {
-  background: rgba(233, 211, 187, 0.34);
-  border-color: rgba(173, 137, 102, 0.26);
-}
-
-.hero-keywords span:nth-child(4n + 4) {
-  background: rgba(219, 204, 233, 0.34);
-  border-color: rgba(145, 122, 175, 0.28);
-}
-
-.hero-actions {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 22px;
-}
-
-.hero-actions a,
-.hero-actions button {
-  position: relative;
-  overflow: hidden;
-  border-radius: 14px;
-  border: 1px solid rgba(84, 116, 103, 0.3);
-  padding: 13px 18px 11px;
-  font-size: 0.92rem;
-  text-decoration: none;
-  color: #234238;
-  background: rgba(242, 245, 237, 0.86);
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.hero-actions a::before,
-.hero-actions button::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 42%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0));
-  pointer-events: none;
-}
-
-.hero-actions a::after,
-.hero-actions button::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 44px;
-  height: 16px;
-  transform: translateX(-50%);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  background: rgba(190, 203, 194, 0.5);
-  pointer-events: none;
-}
-
-.hero-actions .primary {
-  background: rgba(88, 126, 111, 0.86);
-  color: #f5f8ef;
-  border-color: rgba(75, 111, 96, 0.92);
-}
-
-.hero-actions a:hover,
-.hero-actions button:hover {
-  transform: translateY(-1px);
-  background: rgba(220, 231, 217, 0.95);
-}
-
-.hero-actions a:hover::after,
-.hero-actions button:hover::after {
-  background: rgba(174, 192, 182, 0.62);
-}
-
-.hero-actions .primary:hover {
-  background: rgba(73, 111, 96, 0.9);
-}
-
-.section-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.section-heading h2 {
-  margin: 0;
-  color: #243d35;
-  font-size: 1.35rem;
-}
-
-.section-heading p {
-  margin: 6px 0 0;
-  color: #46675b;
-  font-size: 0.9rem;
-}
-
-/* =========================================
-   修改部分：项目分类标签 (Project Categories)
-   扩宽、纯色、极简并增加 Hover 动画
-========================================= */
+/* 宽大胶囊项目分类标签 */
 .project-categories {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px; /* 增加标签之间的间距 */
+  gap: 12px; 
   margin-top: 16px;
   margin-bottom: 12px;
 }
 
 .project-categories span {
-  border: none; /* 移除边框，纯色更极简 */
-  border-radius: 999px; /* 胶囊状圆角 */
-  padding: 8px 22px; /* 左右增加大内边距，让标签变宽 */
-  background: rgba(230, 237, 225, 0.85); /* 柔和的浅绿色底色 */
-  color: #405e53; /* 配合背景的深绿文字 */
+  border: none; 
+  border-radius: 999px; 
+  padding: 8px 22px; 
+  background: rgba(230, 237, 225, 0.85); 
+  color: #405e53; 
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.25s ease-in-out; /* 添加平滑的颜色过渡动画 */
+  transition: all 0.25s ease-in-out; 
 }
 
-/* 鼠标悬停变色效果 */
 .project-categories span:hover {
-  background: rgba(210, 222, 205, 0.95); /* 稍微变深的底色 */
+  background: rgba(210, 222, 205, 0.95); 
   color: #213932;
 }
 
-/* 选中状态 */
 .project-categories .active {
-  background: #2a453d; /* 纯正的深墨绿 */
-  color: #f5f8ef; /* 偏米白的文字 */
-  box-shadow: 0 4px 12px rgba(42, 69, 61, 0.15); /* 加一点微弱的阴影让它浮起来 */
+  background: #2a453d; 
+  color: #f5f8ef; 
+  box-shadow: 0 4px 12px rgba(42, 69, 61, 0.15); 
 }
-/* ========================================= */
 
+/* 卡片网格系统 */
 .project-grid,
 .hobby-grid {
   display: grid;
@@ -273,7 +229,6 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 给卡片也顺手加一点微小的 hover 浮动效果，看起来更有质感 */
 .project-card:hover,
 .hobby-card:hover {
   transform: translateY(-2px);
@@ -336,17 +291,9 @@
   padding: 5px 10px;
 }
 
-.project-tags span:nth-child(3n + 1) {
-  background: rgba(182, 206, 229, 0.28);
-}
-
-.project-tags span:nth-child(3n + 2) {
-  background: rgba(199, 220, 190, 0.28);
-}
-
-.project-tags span:nth-child(3n + 3) {
-  background: rgba(234, 215, 193, 0.28);
-}
+.project-tags span:nth-child(3n + 1) { background: rgba(182, 206, 229, 0.28); }
+.project-tags span:nth-child(3n + 2) { background: rgba(199, 220, 190, 0.28); }
+.project-tags span:nth-child(3n + 3) { background: rgba(234, 215, 193, 0.28); }
 
 .section-nav {
   display: flex;
@@ -384,6 +331,7 @@
   font-size: 0.78rem;
 }
 
+/* 移动端响应式 */
 @media (max-width: 960px) {
   .project-grid,
   .hobby-grid {
@@ -401,16 +349,12 @@
     padding: 20px;
   }
 
-  .hero-center {
-    padding-top: 48px;
-  }
-
-  .hero-actions {
+  .intro-actions {
     flex-direction: column;
   }
 
-  .hero-actions a,
-  .hero-actions button {
+  .intro-actions a,
+  .intro-actions button {
     width: min(260px, 86vw);
     text-align: center;
   }
