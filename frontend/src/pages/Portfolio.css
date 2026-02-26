@@ -70,7 +70,7 @@
   text-align: center;
   max-width: 860px;
   margin: 0 auto;
-  padding-top: 80px;
+  padding-top: 118px;
 }
 
 .hero-center h1 {
@@ -138,15 +138,43 @@
 
 .hero-actions a,
 .hero-actions button {
+  position: relative;
+  overflow: hidden;
   border-radius: 14px;
   border: 1px solid rgba(84, 116, 103, 0.3);
-  padding: 12px 18px;
+  padding: 13px 18px 11px;
   font-size: 0.92rem;
   text-decoration: none;
   color: #234238;
   background: rgba(242, 245, 237, 0.86);
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.hero-actions a::before,
+.hero-actions button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 42%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.hero-actions a::after,
+.hero-actions button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 44px;
+  height: 16px;
+  transform: translateX(-50%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: rgba(190, 203, 194, 0.5);
+  pointer-events: none;
 }
 
 .hero-actions .primary {
@@ -159,6 +187,11 @@
 .hero-actions button:hover {
   transform: translateY(-1px);
   background: rgba(220, 231, 217, 0.95);
+}
+
+.hero-actions a:hover::after,
+.hero-actions button:hover::after {
+  background: rgba(174, 192, 182, 0.62);
 }
 
 .hero-actions .primary:hover {
@@ -340,7 +373,7 @@
   }
 
   .hero-center {
-    padding-top: 30px;
+    padding-top: 48px;
   }
 
   .hero-actions {

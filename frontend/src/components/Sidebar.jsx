@@ -3,7 +3,7 @@ import './Sidebar.css'
 export function Sidebar({ activePage, onNavigate }) {
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">Zhiming Portfolio</div>
+      <div className="sidebar-brand">HZ&apos;s Space</div>
 
       <nav className="sidebar-nav">
         <div className="nav-section">
@@ -29,3 +29,4 @@ export function Sidebar({ activePage, onNavigate }) {
     </aside>
   )
 }
+
